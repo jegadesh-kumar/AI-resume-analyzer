@@ -3,16 +3,20 @@ from openai import OpenAI
 from PyPDF2 import PdfReader
 from reportlab.platypus import SimpleDocTemplate, Paragraph
 from reportlab.lib.styles import getSampleStyleSheet
+from dotenv import load_dotenv
 import uuid
+import os
 
 filename = f"{uuid.uuid4()}.pdf"
+
+load_dotenv()
 
 app = Flask(__name__)
 
 # NVIDIA NIM Client
 client = OpenAI(
     base_url="https://integrate.api.nvidia.com/v1",
-    api_key="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"
+    api_key=os.getenv("NVIDIA_API_KEY")
 )
 
 # Home Page
