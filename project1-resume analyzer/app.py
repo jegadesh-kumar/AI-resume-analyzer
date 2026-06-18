@@ -7,8 +7,6 @@ from dotenv import load_dotenv
 import uuid
 import os
 
-filename = f"{uuid.uuid4()}.pdf"
-
 load_dotenv()
 
 app = Flask(__name__)
@@ -28,6 +26,7 @@ def home():
 # Analyze Route
 @app.route("/analyze", methods=["POST"])
 def analyze():
+    filename = f"{uuid.uuid4()}.pdf"
 
     resume_file = request.files["resume"]
     job_description = request.form["job_description"]
@@ -142,6 +141,8 @@ Also generate a professional cover letter tailored to this job description and c
         content.append(Paragraph("Cover Letter", styles["Heading2"]))
         content.append(Paragraph(cover_letter_text.replace("\n", "<br/>"), styles["Normal"]))
     # Create a PDF document
+    doc = SimpleDocTemplate(filename)
+    doc.build(content)
 
     from flask import send_file
     return send_file(
